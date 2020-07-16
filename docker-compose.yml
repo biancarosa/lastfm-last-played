@@ -5,7 +5,7 @@ services:
       context: api
     command: gunicorn app.main:app --bind 0.0.0.0:5000 --reload
     volumes:
-      - ./api:/app
+      - ./api/app:/app
     ports:
       - "5000:5000"
     env_file:

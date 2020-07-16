@@ -10,7 +10,6 @@ ADD Pipfile.lock Pipfile.lock
 RUN set -ex && \
     pipenv install --dev --system --deploy
 
-WORKDIR /app
-ADD app .
+ADD app app
 
 CMD exec gunicorn app.main:app
