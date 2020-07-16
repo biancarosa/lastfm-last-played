@@ -1,0 +1,26 @@
+<html>
+
+<head>
+</head>
+
+<body>
+    <div id="lastfm-widget">
+        <div id="widget">&#127911; <span id="song">&#8987;</span></div>
+        <div>
+            <p><small>latest played song on <a href="http://last.fm" target="_blank">last.fm</a></small></p>
+            <p><small>powered by <a href="https://github.com/biancarosa/lastfm-last-played"
+                        target="_blank">@biancarosa/lastfm-last-played</a></small></p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        let user = 'biahll';
+        let url = 'https://lastfm-last-played.biancarosa.com.br/' + user + '/latest-song';
+        let song = document.querySelector('#song');
+        fetch(url)
+            .then(function (response) {
+                return response.json()
+            }).then(function (json) {
+                song.innerHTML = json['track']['name'] + ' - ' + json['track']['artist']['#text'];
+            });
+    </script>
+</body>
