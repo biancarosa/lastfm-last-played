@@ -9,5 +9,5 @@ def create_blueprint():
     """Creates a Blueprint"""
     blueprint = Blueprint('Songs Blueprint', __name__)
     blueprint.route(
-        '/<user>/latest-songs', methods=['GET'])(latest_songs.route)
+        '/<user>/latest-song', methods=['GET'])(latest_songs.route)
     return blueprint
