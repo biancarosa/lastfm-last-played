@@ -25,7 +25,10 @@ def route(user):
         }), 500
     try:
         req = requests.get(api_url)
-        return jsonify(req.json()), req.status_code
+        lastfm_response = req.json()
+        return jsonify({
+            'track': lastfm_response['recenttracks']['track'][0]
+        }), req.status_code
     except Exception as exception:  # pylint: disable=W0703
         log.exception(exception)
         return jsonify({

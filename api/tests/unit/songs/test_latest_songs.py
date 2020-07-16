@@ -20,9 +20,9 @@ def test_get_with_exception(requests, client):
 
 @patch.dict(os.environ, {"LASTFM_API_KEY": 'something old'})
 @patch('requests.get')
-def test_get_with_success(mock_get, client):
+def test_get_with_success(mock_get, client, lastfm_response):
     mock_get.return_value.status_code = 500
-    mock_get.return_value.json.return_value = ['something boworred']
+    mock_get.return_value.json.return_value = lastfm_response
     rv = client.get('/user/latest-songs')
-    assert rv.json == mock_get.return_value.json.return_value
+    assert rv.json == {'track': lastfm_response['recenttracks']['track'][0]}
     assert rv.status_code == mock_get.return_value.status_code
