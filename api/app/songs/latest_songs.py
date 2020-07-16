@@ -9,12 +9,15 @@ import requests
 from flask import jsonify, request
 
 log = logging.getLogger(__name__)
+BASE_URL = 'https://ws.audioscrobbler.com/2.0/'
+RECENT_TRACKS_PARAMS = 'method=user.getrecenttracks&limit=1&format=json'
 
 
 def route(user):
+    """Returns the user two latest tracks on lastfm"""
     log.info('Received a request :: %s', request)
     api_key = os.environ.get('LASTFM_API_KEY')
-    api_url = f"https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user={user}&api_key={api_key}&limit=1&format=json"
+    api_url = f"{BASE_URL}?{RECENT_TRACKS_PARAMS}&user={user}&api_key={api_key}"
     if not api_key:
         log.error('Last.fm API key is not set')
         return jsonify({
