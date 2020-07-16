@@ -22,7 +22,7 @@ def client():
 
 @pytest.fixture
 def lastfm_response():
-    return {{
+    return {
         "recenttracks": {
             "@attr": {
                 "page": "1",
