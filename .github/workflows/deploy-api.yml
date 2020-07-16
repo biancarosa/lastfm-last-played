@@ -12,7 +12,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.RUN_PROJECT }}
   RUN_REGION: us-central1
-  SERVICE_NAME: personal-pass-manager
+  SERVICE_NAME: lastfm-last-played
 
 jobs:
   setup-build-deploy:
