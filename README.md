@@ -3,6 +3,29 @@
 
 # Last.fm Last Played Songs
 
+# The Basics
+
+## How it works
+
+You can send a request to the API URL:
+
+```bash
+curl -s https://lastfm-last-played.biancarosa.com.br/{{your-lasfm-username/latest-song | jq
+```
+
+## Wanna use it?
+
+There aren't any frontend packages written *yet* because I am not a very strong frontend developer, so pull-requests are welcome, but I've written an example using basic JavaScript [here](https://github.com/biancarosa/lastfm-last-played/blob/master/examples/index.html).
+
+On my [own website](https://biancarosa.com.br/), it looks like this:
+![Lastfm Last Played on my website](images/lastfm-last-played.png)
+
+Code is [here](https://github.com/biancarosa/blog/blob/master/layouts/partials/extended_header.html).
+
+## Like it?
+
+Consider starring the repo, contributing to it and tweeting about it.
+
 # Running the app
 
 ## Docker
