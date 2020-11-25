@@ -33,7 +33,7 @@ def route(user):
                 artist = track['artist']['#text']
                 return jsonify({
                     'schemaVersion': 1,
-                    'label': 'last-played-song',
+                    'label': 'Last.FM Last Played Song',
                     'message': f"{song} - {artist}",
                 }), 200
             return jsonify({

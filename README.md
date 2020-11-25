@@ -10,10 +10,20 @@
 You can send a request to the API URL:
 
 ```bash
-curl -s https://lastfm-last-played.biancarosa.com.br/{{your-lasfm-username/latest-song | jq
+curl -s https://lastfm-last-played.biancarosa.com.br/{{your-lasfm-username}}/latest-song | jq
 ```
 
+The query string `format` can receive the value `shields.io` for you to generate your own [Shields.io](https://shields.io/endpoint) markdown badge.
+
 ## Wanna use it?
+
+### Markdown
+
+[![Last.FM Last Played Song](https://img.shields.io/endpoint?color=blueviolet&url=https://lastfm-last-played.biancarosa.com.br/biahll/latest-song?format=shields.io)](https://github.com/biancarosa/lastfm-last-played)
+
+```[![Last.FM Last Played Song](https://img.shields.io/endpoint?color=blueviolet&url=https://lastfm-last-played.biancarosa.com.br/{{your-lastfm-username}}/latest-song?format=shields.io)](https://github.com/biancarosa/lastfm-last-played)```
+
+### JavaScript
 
 There aren't any frontend packages written *yet* because I am not a very strong frontend developer, so pull-requests are welcome, but I've written an example using basic JavaScript [here](https://github.com/biancarosa/lastfm-last-played/blob/master/examples/index.html).
 
