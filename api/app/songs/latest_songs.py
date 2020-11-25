@@ -39,10 +39,9 @@ def route(user):
             return jsonify({
                 'track': track
             }), req.status_code
-        else:
-            return jsonify({
-                'message': 'NO_TRACKS_FOUND'
-            }), 204
+        return jsonify({
+            'message': 'NO_TRACKS_FOUND'
+        }), 204
     except Exception as exception:  # pylint: disable=W0703
         log.exception(exception)
         return jsonify({
