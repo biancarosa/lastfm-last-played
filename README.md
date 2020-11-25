@@ -10,7 +10,7 @@
 You can send a request to the API URL:
 
 ```bash
-curl -s https://lastfm-last-played.biancarosa.com.br/{{your-lasfm-username}}/latest-song}} | jq
+curl -s https://lastfm-last-played.biancarosa.com.br/{{your-lasfm-username}}/latest-song | jq
 ```
 
 The query string `format` can receive the value `shields.io` for you to generate your own [Shields.io](https://shields.io/endpoint) markdown badge.
