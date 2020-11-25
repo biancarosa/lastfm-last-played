@@ -32,19 +32,19 @@ def route(user):
                 song = track['name']
                 artist = track['artist']['#text']
                 return jsonify({
-                    "schemaVersion": 1,
-                    "label": "last-played-song",
-                    "message": f"{song} - {artist}",
+                    'schemaVersion': 1,
+                    'label': 'last-played-song',
+                    'message': f"{song} - {artist}",
                 }), 200
             return jsonify({
                 'track': track
             }), req.status_code
         else:
             return jsonify({
-                "message": "NO_TRACKS_FOUND" 
+                'message': 'NO_TRACKS_FOUND'
             }), 204
     except Exception as exception:  # pylint: disable=W0703
         log.exception(exception)
         return jsonify({
-            "message": "INTERNAL_ERROR"
+            'message': 'INTERNAL_ERROR'
         }), 500
