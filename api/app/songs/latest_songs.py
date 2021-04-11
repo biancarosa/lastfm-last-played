@@ -28,7 +28,7 @@ def route(user):
         lastfm_response = req.json()
         try:
             track = lastfm_response['recenttracks']['track'][0]
-        except:
+        except IndexError:
             return jsonify({
                 'message': 'NO_TRACKS_FOUND'
             }), 200
