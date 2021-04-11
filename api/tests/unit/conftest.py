@@ -106,3 +106,18 @@ def lastfm_response():
             ]
         }
     }
+
+@pytest.fixture
+def lastfm_empty_response():
+    return {
+        "recenttracks": {
+            "@attr": {
+                "page": "1",
+                "perPage": "1",
+                "total": "1",
+                "totalPages": "1",
+                "user": "biahll"
+            },
+            "track": []
+        }
+    }

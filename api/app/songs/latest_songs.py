@@ -26,22 +26,23 @@ def route(user):
     try:
         req = requests.get(api_url)
         lastfm_response = req.json()
-        track = lastfm_response['recenttracks']['track'][0]
-        if track:
-            if request.args.get('format') == 'shields.io':
-                song = track['name']
-                artist = track['artist']['#text']
-                return jsonify({
-                    'schemaVersion': 1,
-                    'label': 'Last.FM Last Played Song',
-                    'message': f"{song} - {artist}",
-                }), 200
+        try:
+            track = lastfm_response['recenttracks']['track'][0]
+        except:
             return jsonify({
-                'track': track
-            }), req.status_code
+                'message': 'NO_TRACKS_FOUND'
+            }), 200
+        if request.args.get('format') == 'shields.io':
+            song = track['name']
+            artist = track['artist']['#text']
+            return jsonify({
+                'schemaVersion': 1,
+                'label': 'Last.FM Last Played Song',
+                'message': f"{song} - {artist}",
+            }), 200
         return jsonify({
-            'message': 'NO_TRACKS_FOUND'
-        }), 204
+            'track': track
+        }), req.status_code
     except Exception as exception:  # pylint: disable=W0703
         log.exception(exception)
         return jsonify({
