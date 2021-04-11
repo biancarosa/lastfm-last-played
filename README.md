@@ -1,6 +1,6 @@
 ![build-api](https://github.com/biancarosa/lastfm-last-played/workflows/build-api/badge.svg)
 ![deploy-api](https://github.com/biancarosa/lastfm-last-played/workflows/deploy-api/badge.svg)
-
+[![codecov](https://codecov.io/gh/biancarosa/lastfm-last-played/branch/main/graph/badge.svg?token=SITY0HAB3T)](https://codecov.io/gh/biancarosa/lastfm-last-played)
 # Last.fm Last Played Songs
 
 # The Basics
