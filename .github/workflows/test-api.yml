@@ -23,6 +23,10 @@ jobs:
         run: make init
       - name: Test Coverage
         run: make coverage
+      - name: "Upload coverage to Codecov"
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
 
   lint:
     runs-on: ubuntu-latest
