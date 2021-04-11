@@ -5,9 +5,9 @@ defaults:
     
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 jobs:
   test:
@@ -36,6 +36,12 @@ jobs:
       - name: Install dependencies
         run: make init
       - name: Test Coverage
+        run: make coverage
+      - name: pytest-coverage-commentator
+        uses: coroo/pytest-coverage-commentator@v1.0.2
+        with:
+          pytest-coverage: pytest-coverage.txt
+      - name: Test Lint
         run: make lint
 
   build:
