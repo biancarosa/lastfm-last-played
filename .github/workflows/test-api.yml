@@ -23,6 +23,10 @@ jobs:
         run: make init
       - name: Test Coverage
         run: make coverage
+      - name: pytest-coverage-commentator
+        uses: coroo/pytest-coverage-commentator@v1.0.2
+        with:
+          pytest-coverage: pytest-coverage.txt
 
   lint:
     runs-on: ubuntu-latest
@@ -35,13 +39,7 @@ jobs:
           python-version: 3.8
       - name: Install dependencies
         run: make init
-      - name: Test Coverage
-        run: make coverage
-      - name: pytest-coverage-commentator
-        uses: coroo/pytest-coverage-commentator@v1.0.2
-        with:
-          pytest-coverage: pytest-coverage.txt
-      - name: Test Lint
+      - name: Lint
         run: make lint
 
   build:
