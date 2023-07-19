@@ -12,7 +12,7 @@ pytest-cov = "*"
 
 [packages]
 flask = "==1.1.1"
-gunicorn = "==20.1.0"
+gunicorn = "==21.2.0"
 flask-cors = "*"
 requests = "*"
 
