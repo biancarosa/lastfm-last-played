@@ -24,9 +24,10 @@ jobs:
       - name: Test Coverage
         run: make coverage
       - name: "Upload coverage to Codecov"
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v4
         with:
           fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }} 
 
   lint:
     runs-on: ubuntu-latest
