@@ -2,7 +2,7 @@ FROM python:3.10.1-alpine
 
 RUN apk add --no-cache --update git make gcc python3-dev musl-dev && \
     set -ex && \
-    pip install --no-cache-dir pipenv==10.1.2
+    pip install --no-cache-dir pipenv==2023.12.1
 
 ADD Pipfile Pipfile
 ADD Pipfile.lock Pipfile.lock
