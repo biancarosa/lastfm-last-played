@@ -11,7 +11,7 @@ from flask import jsonify, request
 log = logging.getLogger(__name__)
 BASE_URL = 'https://ws.audioscrobbler.com/2.0/'
 RECENT_TRACKS_PARAMS = 'method=user.getrecenttracks&limit=1&format=json'
-
+TIMEOUT = 10 # seconds
 
 def route(user):
     """Returns the user two latest tracks on lastfm"""
@@ -24,7 +24,7 @@ def route(user):
             "message": "INTERNAL_ERROR"
         }), 500
     try:
-        req = requests.get(api_url)
+        req = requests.get(api_url, timeout=TIMEOUT)
         lastfm_response = req.json()
         try:
             track = lastfm_response['recenttracks']['track'][0]
