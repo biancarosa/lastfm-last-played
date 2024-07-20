@@ -26,8 +26,14 @@ def route(user):
     try:
         req = requests.get(api_url, timeout=TIMEOUT)
         lastfm_response = req.json()
+        log.info("Response received", response=lastfm_response)
         try:
             track = lastfm_response['recenttracks']['track'][0]
+        except KeyError:
+            log.info(f"User likely exist {user}")
+            return jsonify({
+                'message': 'USER_LIKELY_DOESNT_EXIST',
+            }), 404
         except IndexError:
             return jsonify({
                 'message': 'NO_TRACKS_FOUND'
