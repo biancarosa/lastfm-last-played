@@ -121,3 +121,7 @@ def lastfm_empty_response():
             "track": []
         }
     }
+
+@pytest.fixture
+def lastfm_no_recent_tracks_response():
+    return {}

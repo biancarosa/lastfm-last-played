@@ -55,3 +55,15 @@ def test_get_with_success_no_tracks(mock_get, client, lastfm_empty_response):
     assert rv.json == {
         'message': 'NO_TRACKS_FOUND'
     }
+
+@patch.dict(os.environ, {"LASTFM_API_KEY": 'something old'})
+@patch('requests.get')
+def test_get_with_error_user_not_found_tracks(mock_get, client, lastfm_no_recent_tracks_response):
+    mock_get.return_value.status_code = 200
+    mock_get.return_value.json.return_value = lastfm_no_recent_tracks_response
+    rv = client.get('/user/latest-song')
+
+    assert rv.status_code == 404
+    assert rv.json == {
+        'message': 'USER_LIKELY_DOESNT_EXIST'
+    }
