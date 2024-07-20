@@ -30,7 +30,7 @@ def route(user):
         try:
             track = lastfm_response['recenttracks']['track'][0]
         except KeyError:
-            log.info(f"User likely exist {user}")
+            log.info("User likely exist %s", user)
             return jsonify({
                 'message': 'USER_LIKELY_DOESNT_EXIST',
             }), 404
