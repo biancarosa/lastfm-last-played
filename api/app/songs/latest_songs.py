@@ -33,7 +33,7 @@ def route(user):
             except KeyError:
                 log.info("User likely exist %s", user)
                 return jsonify({
-                    'message': 'USER_LIKELY_DOESNT_EXIST',
+                    'message': 'USER_LIKELY_DOESNT_EXIST'
                 }), 404
             track = recent_tracks['track'][0]
         except IndexError:
@@ -46,7 +46,7 @@ def route(user):
             return jsonify({
                 'schemaVersion': 1,
                 'label': 'Last.FM Last Played Song',
-                'message': f"{song} - {artist}",
+                'message': f"{song} - {artist}"
             }), 200
         return jsonify({
             'track': track
