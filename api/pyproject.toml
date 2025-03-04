@@ -7,7 +7,7 @@ dependencies = [
     "flask==2.3.3",
     "gunicorn==23.0.0",
     "flask-cors",
-    "requests",
+    "requests"
 ]
 
 [project.optional-dependencies]
@@ -16,7 +16,7 @@ dev = [
     "autopep8",
     "pytest",
     "faker",
-    "pytest-cov",
+    "pytest-cov"
 ]
 
 [build-system]

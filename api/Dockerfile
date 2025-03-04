@@ -1,15 +1,17 @@
 FROM python:3.12.4-alpine
 
-RUN apk add --no-cache --update git make gcc python3-dev musl-dev && \
-    set -ex && \
-    pip install --no-cache-dir uv
+RUN apk add --no-cache --update git make gcc python3-dev musl-dev
 
 WORKDIR /app
-ADD pyproject.toml pyproject.toml
-ADD app app
+COPY pyproject.toml .
+COPY app app/
 
-RUN set -ex && \
-    uv venv && \
-    uv pip install -e ".[dev]"
+# Install dependencies globally
+RUN pip install -e ".[dev]"
 
-CMD exec gunicorn app.main:app
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app
+
+# Run with debug logging
+CMD exec gunicorn --pythonpath /app app.main:app --bind 0.0.0.0:${PORT:-8080} --log-level debug

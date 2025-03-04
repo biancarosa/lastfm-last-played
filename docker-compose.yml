@@ -3,9 +3,9 @@ services:
   api:
     build:
       context: api
-    command: gunicorn app.main:app --bind 0.0.0.0:5000 --reload
+    command: sh -c "cd /app && PYTHONPATH=/app gunicorn app.main:app --bind 0.0.0.0:5000 --reload --log-level debug"
     volumes:
-      - ./api/app:/app
+      - ./api:/app
     ports:
       - "5000:5000"
     env_file:
