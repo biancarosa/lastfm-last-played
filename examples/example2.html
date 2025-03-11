@@ -1,0 +1,101 @@
+<html>
+
+<head>
+</head>
+
+<body>
+    <div id="widget" class="content">
+        <h2 id="playState">Last played was</h2>
+        <p id="loading">&#8987;</p>
+    </div>
+    <div class="content">
+        <p>
+            <small>
+                latest played song on
+                <a id="user" href="https://last.fm/" target="_blank">
+                    last.fm
+                </a>
+            </small>
+        </p>
+        <p>
+            <small>
+                powered by
+                <a
+                    href="https://github.com/biancarosa/lastfm-last-played"
+                    target="_blank"
+                >
+                    @biancarosa/lastfm-last-played
+                </a>
+            </small>
+        </p>
+    </div>
+
+    <style>
+        /* hide loading symbol once loaded */
+        .hidden {
+            display: none;
+        }
+    </style>
+
+    <script type="text/javascript">
+         console.log('JS connected');
+ 
+ // ------------Now Playing------------
+  let user = 'DeadFaceR1P'; //put your username here
+  let url = 'https://lastfm-last-played.biancarosa.com.br/' + user + '/latest-song';
+  
+  
+  fetch(url)
+      .then(function (response) {
+          return response.json()
+      }).then(function (json) {
+      	console.log(json);
+      	const track = json['track'];
+      	const t = '#text';
+      	const small = '0';
+      	const medium = '1';
+      	const large = '2';
+      	const xl = '3';
+      	
+      	const widget = document.getElementById('widget');
+      	const loading = document.getElementById('loading');
+      	const playTitle = document.getElementById('playState');
+		
+      	const art = document.createElement('img');
+      	art.src = track['image'][large][t];
+      	widget.appendChild(art);
+      	const name = document.createElement('h3');
+      	widget.appendChild(name);
+      	const artist = document.createElement('p');
+      	widget.appendChild(artist);
+      	const album = document.createElement('p');
+      	widget.appendChild(album);
+        //To style each element
+      	// {{selectelement}}.setAttribute('class', {{yourclass}});
+          
+    	//Add info to elements
+        name.innerText = track['name'];
+    	artist.innerText = track['artist'][t];
+    	album.innerText = track['album'][t];
+    	
+		const a = document.getElementById('user');
+		a.setAttribute('href', 'https://www.last.fm/user/' + user);
+  
+    	//hide the loading symbol
+        loading.setAttribute('class', 'hidden');
+    	
+        //play boolean
+    	let playBoo = track['@attr']['nowplaying'];
+
+    	console.log(playBoo);
+    	if(playBoo) { //if there's something in play boolean, say 'now playing'
+    		playTitle.innerText = 'Now Playing';
+    	} 
+    	else {
+    		playTitle.innerText = 'Error';
+    	}
+    	
+    	
+      });
+    </script>
+</body>
