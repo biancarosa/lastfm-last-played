@@ -46,7 +46,7 @@ def route(user):
                 try:
                     recent_tracks = lastfm_response['recenttracks']
                 except KeyError:
-                    log.info("User likely exist %s", user)
+                    log.info("User likely doesnt exist %s", user)
                     process_span.set_status(Status(StatusCode.ERROR))
                     process_span.record_exception(KeyError("recenttracks not found in response"))
                     return jsonify({
