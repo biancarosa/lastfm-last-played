@@ -7,7 +7,13 @@ dependencies = [
     "flask==2.3.3",
     "gunicorn==23.0.0",
     "flask-cors",
-    "requests"
+    "requests",
+    "opentelemetry-api",
+    "opentelemetry-sdk",
+    "opentelemetry-instrumentation-flask",
+    "opentelemetry-instrumentation",
+    "opentelemetry-distro",
+    "opentelemetry-exporter-otlp"
 ]
 
 [project.optional-dependencies]
