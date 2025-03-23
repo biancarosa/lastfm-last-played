@@ -21,7 +21,7 @@ def route(user):
     with tracer.start_as_current_span("get_latest_song") as span:
         span.set_attribute("user", user)
         log.info('Received a request :: %s', request)
-        
+
         with tracer.start_as_current_span("check_api_key") as api_key_span:
             api_key = os.environ.get('LASTFM_API_KEY')
             if not api_key:
@@ -31,7 +31,7 @@ def route(user):
                 return jsonify({
                     "message": "INTERNAL_ERROR"
                 }), 500
-        
+
         api_url = f"{BASE_URL}?{RECENT_TRACKS_PARAMS}&user={user}&api_key={api_key}"
         try:
             with tracer.start_as_current_span("lastfm_api_request") as request_span:
@@ -41,7 +41,7 @@ def route(user):
                 lastfm_response = req.json()
                 request_span.set_attribute("lastfm.status_code", req.status_code)
                 log.info("Response received", extra={'response': lastfm_response})
-                
+
             with tracer.start_as_current_span("process_response") as process_span:
                 try:
                     recent_tracks = lastfm_response['recenttracks']
@@ -52,7 +52,7 @@ def route(user):
                     return jsonify({
                         'message': 'USER_LIKELY_DOESNT_EXIST'
                     }), 404
-                
+
                 try:
                     track = recent_tracks['track'][0]
                     process_span.set_attribute("track.name", track['name'])
@@ -63,7 +63,7 @@ def route(user):
                     return jsonify({
                         'message': 'NO_TRACKS_FOUND'
                     }), 200
-                
+
                 if request.args.get('format') == 'shields.io':
                     song = track['name']
                     artist = track['artist']['#text']
@@ -75,7 +75,7 @@ def route(user):
                 return jsonify({
                     'track': track
                 }), req.status_code
-        except Exception as exception:
+        except Exception as exception: # pylint: disable=broad-exception-caught
             log.exception(exception)
             span.set_status(Status(StatusCode.ERROR))
             span.record_exception(exception)
