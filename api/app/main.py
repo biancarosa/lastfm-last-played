@@ -19,5 +19,6 @@ logging.basicConfig(level=os.environ.get(
 # pylint: disable=C0103
 app = Flask(__name__)
 CORS(app)
+
 app.register_blueprint(health_check_blueprint.create_blueprint())
 app.register_blueprint(songs_blueprint.create_blueprint())
