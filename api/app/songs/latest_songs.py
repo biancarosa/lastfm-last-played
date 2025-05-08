@@ -14,7 +14,7 @@ tracer = trace.get_tracer(__name__)
 
 BASE_URL = 'https://ws.audioscrobbler.com/2.0/'
 RECENT_TRACKS_PARAMS = 'method=user.getrecenttracks&limit=1&format=json'
-TIMEOUT = 10 # seconds
+TIMEOUT = 1 # seconds
 
 def route(user):
     """Returns the user two latest tracks on lastfm"""
