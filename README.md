@@ -18,7 +18,7 @@ The query string `format` can receive the value `shields.io` for you to generate
 
 ### Markdown
 
-[![Last.FM Last Played Song](https://img.shields.io/endpoint?color=blueviolet&url=https://lastfm-last-played.biancarosa.com.br/biancarosa/latest-song?format=shields.io)](https://github.com/biancarosa/lastfm-last-played)
+[![Last.FM Last Played Song](https://img.shields.io/endpoint?color=blueviolet&url=https://lastfm-last-played.biancarosa.com.br/biancarosa__/latest-song?format=shields.io)](https://github.com/biancarosa/lastfm-last-played)
 
 ```[![Last.FM Last Played Song](https://img.shields.io/endpoint?color=blueviolet&url=https://lastfm-last-played.biancarosa.com.br/{{your-lastfm-username}}/latest-song?format=shields.io)](https://github.com/biancarosa/lastfm-last-played)```
 
