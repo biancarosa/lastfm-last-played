@@ -37,10 +37,18 @@ def route(user):
             with tracer.start_as_current_span("lastfm_api_request") as request_span:
                 request_span.set_attribute("lastfm.api.url", BASE_URL)
                 request_span.set_attribute("lastfm.user", user)
-                req = requests.get(api_url, timeout=TIMEOUT)
-                lastfm_response = req.json()
-                request_span.set_attribute("lastfm.status_code", req.status_code)
-                log.info("Response received", extra={'response': lastfm_response})
+                try:
+                    req = requests.get(api_url, timeout=TIMEOUT)
+                    lastfm_response = req.json()
+                    request_span.set_attribute("lastfm.status_code", req.status_code)
+                    log.info("Response received", extra={'response': lastfm_response})
+                except requests.exceptions.Timeout:
+                    log.error("Request to Last.fm timed out")
+                    request_span.set_status(Status(StatusCode.ERROR))
+                    request_span.record_exception(TimeoutError("Request to Last.fm timed out"))
+                    return jsonify({
+                        "message": "TIMEOUT"
+                    }), 504
 
             with tracer.start_as_current_span("process_response") as process_span:
                 try:
