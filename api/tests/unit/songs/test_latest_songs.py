@@ -1,4 +1,5 @@
 import os
+import requests
 
 from unittest.mock import patch
 
@@ -16,6 +17,14 @@ def test_get_with_exception(requests, client):
     rv = client.get('/user/latest-song')
     assert rv.json['message'] == 'INTERNAL_ERROR'
     assert rv.status_code == 500
+
+
+@patch.dict(os.environ, {"LASTFM_API_KEY": 'something old'})
+@patch('requests.get', side_effect=requests.exceptions.Timeout())
+def test_get_with_timeout(mock_get, client):
+    rv = client.get('/user/latest-song')
+    assert rv.json['message'] == 'TIMEOUT'
+    assert rv.status_code == 504
 
 
 @patch.dict(os.environ, {"LASTFM_API_KEY": 'something old'})
