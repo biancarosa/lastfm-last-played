@@ -28,7 +28,11 @@ def _validate_api_key(span):
     """Validate that the API key is available"""
     api_key = os.environ.get('LASTFM_API_KEY')
     if not api_key:
-        return None, _handle_error(span, "INTERNAL_ERROR", 'Last.fm API key is not set', 500, Exception("Last.fm API key not set"))
+        error_response = _handle_error(
+            span, "INTERNAL_ERROR", 'Last.fm API key is not set', 500,
+            Exception("Last.fm API key not set")
+        )
+        return None, error_response
     return api_key, None
 
 def _make_lastfm_request(api_url, span):
@@ -40,7 +44,42 @@ def _make_lastfm_request(api_url, span):
         log.info("Response received", extra={'response': lastfm_response})
         return lastfm_response, req.status_code, None
     except requests.exceptions.Timeout:
-        return None, None, _handle_error(span, "TIMEOUT", "Request to Last.fm timed out", 504, TimeoutError("Request to Last.fm timed out"))
+        error_response = _handle_error(
+            span, "TIMEOUT", "Request to Last.fm timed out", 504,
+            TimeoutError("Request to Last.fm timed out")
+        )
+        return None, None, error_response
+
+def _process_lastfm_response(lastfm_response, status_code, span, user):
+    """Process the Last.fm response and return appropriate JSON response"""
+    try:
+        recent_tracks = lastfm_response['recenttracks']
+    except KeyError:
+        log.info("User likely doesnt exist %s", user)
+        span.set_status(Status(StatusCode.ERROR))
+        span.record_exception(KeyError("recenttracks not found in response"))
+        return jsonify({'message': 'USER_LIKELY_DOESNT_EXIST'}), 404
+
+    try:
+        track = recent_tracks['track'][0]
+        span.set_attribute("track.name", track['name'])
+        span.set_attribute("track.artist", track['artist']['#text'])
+    except IndexError:
+        span.set_status(Status(StatusCode.ERROR))
+        span.record_exception(IndexError("No tracks found"))
+        return jsonify({'message': 'NO_TRACKS_FOUND'}), 200
+
+    # Return appropriate response format
+    if request.args.get('format') == 'shields.io':
+        song = track['name']
+        artist = track['artist']['#text']
+        return jsonify({
+            'schemaVersion': 1,
+            'label': 'Last.FM Last Played Song',
+            'message': f"{song} - {artist}"
+        }), 200
+
+    return jsonify({'track': track}), status_code
 
 def route(user):
     """Returns the user two latest tracks on lastfm"""
@@ -60,42 +99,19 @@ def route(user):
             with tracer.start_as_current_span("lastfm_api_request") as request_span:
                 request_span.set_attribute("lastfm.api.url", BASE_URL)
                 request_span.set_attribute("lastfm.user", user)
-                
-                lastfm_response, status_code, error_response = _make_lastfm_request(api_url, request_span)
+
+                lastfm_response, status_code, error_response = _make_lastfm_request(
+                    api_url, request_span
+                )
                 if error_response:
                     return error_response
 
             # Process response
             with tracer.start_as_current_span("process_response") as process_span:
-                try:
-                    recent_tracks = lastfm_response['recenttracks']
-                except KeyError:
-                    log.info("User likely doesnt exist %s", user)
-                    process_span.set_status(Status(StatusCode.ERROR))
-                    process_span.record_exception(KeyError("recenttracks not found in response"))
-                    return jsonify({'message': 'USER_LIKELY_DOESNT_EXIST'}), 404
+                return _process_lastfm_response(
+                    lastfm_response, status_code, process_span, user
+                )
 
-                try:
-                    track = recent_tracks['track'][0]
-                    process_span.set_attribute("track.name", track['name'])
-                    process_span.set_attribute("track.artist", track['artist']['#text'])
-                except IndexError:
-                    process_span.set_status(Status(StatusCode.ERROR))
-                    process_span.record_exception(IndexError("No tracks found"))
-                    return jsonify({'message': 'NO_TRACKS_FOUND'}), 200
-
-                # Return appropriate response format
-                if request.args.get('format') == 'shields.io':
-                    song = track['name']
-                    artist = track['artist']['#text']
-                    return jsonify({
-                        'schemaVersion': 1,
-                        'label': 'Last.FM Last Played Song',
-                        'message': f"{song} - {artist}"
-                    }), 200
-                
-                return jsonify({'track': track}), status_code
-                
         except Exception as exception: # pylint: disable=broad-exception-caught
             log.exception(exception)
             span.set_status(Status(StatusCode.ERROR))
