@@ -1,4 +1,4 @@
-FROM python:3.12.4-alpine
+FROM python:3.13.5-alpine
 
 RUN apk add --no-cache --update git make gcc python3-dev musl-dev
 
