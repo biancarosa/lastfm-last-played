@@ -1,7 +1,6 @@
 init:
 	pip install uv
-	uv venv
-	uv pip install -e ".[dev]"
+	uv sync --all-extras
 
 run:
 	uv run gunicorn app.main:app --workers=4 --bind 0.0.0.0:5000 --reload
