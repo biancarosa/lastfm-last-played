@@ -7,7 +7,6 @@ import logging
 
 from flask import Flask
 from flask_cors import CORS
-from opentelemetry.instrumentation.logging import LoggingInstrumentor
 from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
 from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 from opentelemetry.exporter.otlp.proto.http._log_exporter import OTLPLogExporter
@@ -36,12 +35,9 @@ otlp_exporter = OTLPLogExporter(
 )
 logger_provider.add_log_record_processor(BatchLogRecordProcessor(otlp_exporter))
 
-# Attach OTLP handler to root logger
+# Attach OTLP handler to root logger to export all logs via OTLP
 handler = LoggingHandler(level=logging.NOTSET, logger_provider=logger_provider)
 logging.getLogger().addHandler(handler)
-
-# Initialize OpenTelemetry logging instrumentation (adds trace context to logs)
-LoggingInstrumentor().instrument(set_logging_format=True)
 
 # pylint: disable=C0103
 app = Flask(__name__)
