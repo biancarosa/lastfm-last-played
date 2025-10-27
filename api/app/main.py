@@ -7,7 +7,7 @@ import logging
 
 from flask import Flask
 from flask_cors import CORS
-from opentelemetry.instrumentation.logging import LoggingInstrumentor  # pylint: disable=import-error,no-name-in-module
+from opentelemetry.instrumentation.logging import LoggingInstrumentor
 from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
 from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 from opentelemetry.exporter.otlp.proto.http._log_exporter import OTLPLogExporter
