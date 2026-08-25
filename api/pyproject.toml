@@ -5,7 +5,7 @@ description = "Last.fm Last Played Songs API"
 requires-python = ">=3.12"
 dependencies = [
     "flask==2.3.3",
-    "gunicorn==23.0.0",
+    "gunicorn==26.2.0",
     "flask-cors",
     "requests",
     "opentelemetry-api",
